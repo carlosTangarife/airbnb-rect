@@ -1,6 +1,8 @@
 import { ListingCard } from '@/components/ListingCard';
 
 export const ListingList = ({ listings = [] }) => {
+  console.count('ListingList');
+
   if (listings.length === 0) {
     return <p>No listings found.</p>;
   }

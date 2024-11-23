@@ -3,6 +3,8 @@ import { getImageUrl } from '@/lib/utils/images';
 import { Card, CardContent } from './ui';
 
 export const ListingCard = ({ listing }) => {
+  console.count('ListingCard');
+
   return (
     <Card className='w-[320px]'>
       <img
