@@ -3,10 +3,14 @@ import { useState } from 'react';
 
 import { Button, DateRangePicker, Input, Stepper } from '@/components/ui';
 
-export const ListingFilters = () => {
+export const ListingFilters = ({onChange}) => {
   const [dates, setDates] = useState();
   const [guests, setGuests] = useState(0);
   const [search, setSearch] = useState('');
+
+  const handleSubmit = () => {
+    onChange({ dates, guests, search });
+  };
 
   return (
     <div className='flex flex-row items-center justify-center gap-2'>
@@ -23,7 +27,7 @@ export const ListingFilters = () => {
         placeholder='Add dates'
       />
       <Stepper label='Guests' value={guests} onChange={setGuests} />
-      <Button>
+      <Button onClick={handleSubmit}>
         <Search className='h-4 w-4' />
       </Button>
     </div>
