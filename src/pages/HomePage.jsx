@@ -4,6 +4,7 @@ import { ListingFilters } from '@/components/ListingFilters';
 import { ListingList } from '@/components/ListingList';
 import { Spinner, Separator } from '@/components/ui';
 import { useFetch } from '@/hooks/useFetch';
+import { useCallback } from 'react';
 
 export const HomePage = () => {
   const [filters, setFilters] = useState({
@@ -13,10 +14,14 @@ export const HomePage = () => {
   });
 
   const fetchOptions = useMemo(() => ({params: filters}), [filters]);
-  
+
   const {data: listings, isLoading, error} = useFetch('/api/listings', fetchOptions);
 
   console.count('HomePage', listings);
+
+  const handlerFilters =  useCallback((newFilters) => {
+    setFilters(newFilters);
+  }, [])
 
   const renderListingList = () => {
     if (isLoading) {
@@ -37,7 +42,7 @@ export const HomePage = () => {
   return (
     <div className='container py-4'>
       <div className='mb-4'>
-        <ListingFilters onChange={setFilters} />
+        <ListingFilters onChange={handlerFilters} />
         <Separator className='my-4' />
       </div>
       {renderListingList()}
