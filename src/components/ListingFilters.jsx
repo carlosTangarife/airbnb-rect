@@ -1,9 +1,9 @@
 import { Search } from 'lucide-react';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 
 import { Button, DateRangePicker, Input, Stepper } from '@/components/ui';
 
-export const ListingFilters = ({onChange}) => {
+export const ListingFilters = memo(({onChange}) => {
   const [dates, setDates] = useState();
   const [guests, setGuests] = useState(0);
   const [search, setSearch] = useState('');
@@ -32,4 +32,4 @@ export const ListingFilters = ({onChange}) => {
       </Button>
     </div>
   );
-};
+});
