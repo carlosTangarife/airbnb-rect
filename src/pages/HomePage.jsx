@@ -1,50 +1,22 @@
-import axios from 'axios';
-import { useEffect, useRef,useState } from 'react';
+import { useState, useMemo } from 'react';
 
-import api from '@/api';
 import { ListingFilters } from '@/components/ListingFilters';
 import { ListingList } from '@/components/ListingList';
-import { Spinner } from '@/components/ui';
-import { Separator } from '@/components/ui/Separator';
+import { Spinner, Separator } from '@/components/ui';
+import { useFetch } from '@/hooks/useFetch';
 
 export const HomePage = () => {
-  const [listings, setListings] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, seterror] = useState(null);
   const [filters, setFilters] = useState({
     dates: undefined,
     guests: 0,
     search: '',
   });
 
+  const fetchOptions = useMemo(() => ({params: filters}), [filters]);
+  
+  const {data: listings, isLoading, error} = useFetch('/api/listings', fetchOptions);
+
   console.count('HomePage', listings);
-
-  const abortController = useRef(null);
-
-  useEffect(() => {
-    const fetchListings = async () => {
-      setIsLoading(true);
-      seterror(null);
-      abortController.current = new AbortController();
-      try {
-        const { data } = await api.get('/api/listings', {
-          params: filters,
-          signal: abortController.signal,
-        });
-        setListings(data);
-      } catch (error) {
-        if (axios.isCancel(error)) {
-          return;
-        }
-        seterror('something went worng, plaese try again later');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchListings();
-
-    return () => abortController.current?.abort();
-  }, [filters]);
 
   const renderListingList = () => {
     if (isLoading) {
